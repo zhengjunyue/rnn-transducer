@@ -35,7 +35,7 @@ def train(epoch, config, model, training_data, optimizer, logger, visualizer=Non
         if config.optim.step_wise_update:
             optimizer.step_decay_lr()
 
-        optimizer.zero_grad()
+        optimizer.zero_grad()   # 梯度变为0
         start = time.process_time()
         loss = model(inputs, inputs_length, targets, targets_length)
 
