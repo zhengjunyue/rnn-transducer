@@ -42,7 +42,7 @@ def train(epoch, config, model, training_data, optimizer, logger, visualizer=Non
         if config.training.num_gpu > 1:
             loss = torch.mean(loss)
 
-        loss.backward()
+        loss.backward()   # backpropagate
 
         total_loss += loss.item()
 
@@ -84,7 +84,7 @@ def eval(epoch, config, model, validating_data, logger, visualizer=None):
             targets, targets_length = targets.cuda(), targets_length.cuda()
 
         max_inputs_length = inputs_length.max().item()
-        max_targets_length = targets_length.max().item()
+        max_targets_length time.process_time() = targets_length.max().item()
         inputs = inputs[:, :max_inputs_length, :]
         targets = targets[:, :max_targets_length]
 
@@ -151,7 +151,9 @@ def main():
     logger.info('Set random seed: %d' % config.training.seed)
 
     model = Transducer(config.model)
-
+    
+    
+    # 可以单独load encoder、decoder、jointmodel
     if config.training.load_model:
         checkpoint = torch.load(config.training.load_model)
         model.encoder.load_state_dict(checkpoint['encoder'])
