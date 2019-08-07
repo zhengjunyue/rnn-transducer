@@ -6,8 +6,8 @@ class BaseDecoder(nn.Module):
     def __init__(self, hidden_size, vocab_size, output_size, n_layers, dropout=0.2, share_weight=False):
         super(BaseDecoder, self).__init__()
 
-        self.embedding = nn.Embedding(vocab_size, hidden_size, padding_idx=0)
-
+        self.embedding = nn.Embedding(vocab_size, hidden_size, padding_idx=0) #(vocab 个单词， 维度 hidden_size)
+         
         self.lstm = nn.LSTM(
             input_size=hidden_size,
             hidden_size=hidden_size,
@@ -43,7 +43,7 @@ class BaseDecoder(nn.Module):
 
         return outputs, hidden
 
-
+# (512, 4232, 320, 1, 0.3 )
 def build_decoder(config):
     if config.dec.type == 'lstm':
         return BaseDecoder(
