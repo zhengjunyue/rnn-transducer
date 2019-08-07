@@ -23,12 +23,12 @@ class JointNet(nn.Module):
             t = enc_state.size(1)
             u = dec_state.size(2)
 
-            enc_state = enc_state.repeat([1, 1, u, 1])
-            dec_state = dec_state.repeat([1, t, 1, 1])
+            enc_state = enc_state.repeat([1, 1, u, 1])    #将dec的第二维数 插入enc的第二维之后 （2，3，5）变成 （2，3，5，5）
+            dec_state = dec_state.repeat([1, t, 1, 1])      # 将enc的第二维数 插入dec的第二维之前 （2，5，3）变成 （2，3，5，3）
         else:
             assert enc_state.dim() == dec_state.dim()
 
-        concat_state = torch.cat((enc_state, dec_state), dim=-1)
+        concat_state = torch.cat((enc_state, dec_state), dim=-1) # 将size的最后一个数相加 5+3 = 8 【2,3,5,8】
         outputs = self.forward_layer(concat_state)
 
         outputs = self.tanh(outputs)
@@ -45,7 +45,7 @@ class Transducer(nn.Module):
         self.encoder = build_encoder(config)
         # define decoder
         self.decoder = build_decoder(config)
-        # define JointNet
+        # define JointNet (640,512,4232)
         self.joint = JointNet(
             input_size=config.joint.input_size,
             inner_dim=config.joint.inner_size,
@@ -109,3 +109,4 @@ class Transducer(nn.Module):
             results.append(decoded_seq)
 
         return results
+
