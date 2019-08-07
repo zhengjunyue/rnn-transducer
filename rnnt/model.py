@@ -45,7 +45,7 @@ class Transducer(nn.Module):
         self.encoder = build_encoder(config)
         # define decoder
         self.decoder = build_decoder(config)
-        # define JointNet (640,512,4232)
+        # define JointNet (640,512,4232), enc (160,320), dec (512, 320)
         self.joint = JointNet(
             input_size=config.joint.input_size,
             inner_dim=config.joint.inner_size,
